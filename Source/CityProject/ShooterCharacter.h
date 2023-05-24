@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "ShooterCharacter.generated.h"
 
+class AGun;
+
 UCLASS()
 class CITYPROJECT_API AShooterCharacter : public ACharacter
 {
@@ -29,6 +31,22 @@ public:
 private:
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
+	void StartRun();
+	void StopRun();
 
+private:
+	
+	const float _walkSpeed = 1.0;
+	const float _runSpeed = 2.0;
 
+private:
+	float _speed = _walkSpeed;
+
+private:
+
+	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<AGun> GunClass;
+
+	UPROPERTY()
+		AGun* Gun; 
 };
