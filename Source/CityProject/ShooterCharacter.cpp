@@ -1,18 +1,13 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 
 #include "ShooterCharacter.h"
 #include "Gun.h"
 
-// Sets default values
 AShooterCharacter::AShooterCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 }
 
-// Called when the game starts or when spawned
 void AShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -23,14 +18,12 @@ void AShooterCharacter::BeginPlay()
 	
 }
 
-// Called every frame
 void AShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
-// Called to bind functionality to input
 void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -41,25 +34,31 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis(TEXT("LookRight"), this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAction(TEXT("Run"), EInputEvent::IE_Pressed, this, &AShooterCharacter::StartRun);
 	PlayerInputComponent->BindAction(TEXT("Run"), EInputEvent::IE_Released, this, &AShooterCharacter::StopRun);
+	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &AShooterCharacter::Shoot);
 }
 
 void AShooterCharacter::MoveForward(float AxisValue)
 {
-	AddMovementInput(GetActorForwardVector() * AxisValue * _speed);
+	AddMovementInput(GetActorForwardVector() * AxisValue * Speed);
 }
 
 void AShooterCharacter::MoveRight(float AxisValue)
 {
-	AddMovementInput(GetActorRightVector() * AxisValue * _speed);
+	AddMovementInput(GetActorRightVector() * AxisValue * Speed);
 }
 
 void AShooterCharacter::StartRun()
 {
-	_speed = _runSpeed;
+	Speed = RunSpeed;
 }
 
 void AShooterCharacter::StopRun()
 {
-	_speed = _walkSpeed;
+	Speed = WalkSpeed;
+}
+
+void AShooterCharacter::Shoot()
+{
+	Gun->PullTrigger();
 }
 

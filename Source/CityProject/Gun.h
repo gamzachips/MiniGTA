@@ -1,4 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -24,6 +23,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+public:
+	void PullTrigger();
+
 private:
 	UPROPERTY(VisibleAnywhere)
 		USceneComponent* Root;
@@ -31,5 +33,7 @@ private:
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* Mesh;
 
+	UPROPERTY(EditAnywhere)
+		float MaxRange = 1000.f; //10m
 
 };
