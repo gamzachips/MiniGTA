@@ -3,6 +3,9 @@
 #include "Components/SphereComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Engine/Engine.h"
+#include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "Engine/StaticMeshSocket.h"
 
 AGun::AGun()
 {
@@ -28,7 +31,8 @@ void AGun::Tick(float DeltaTime)
 
 void AGun::PullTrigger()
 {
-	
+	UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleFlashSocket"));
+
 	APawn* OwnerPawn = Cast<APawn>(GetOwner());
 	if (OwnerPawn == nullptr) return;
 	AController* OwnerController = OwnerPawn->GetController();
@@ -39,7 +43,7 @@ void AGun::PullTrigger()
 	OwnerController->GetPlayerViewPoint(Location, Rotation);
 
 	FVector End = Location + Rotation.Vector() * MaxRange;
-
+	FVector BeamEnd = End;
 
 	FHitResult Hit;
 	FCollisionQueryParams Params;
@@ -51,8 +55,30 @@ void AGun::PullTrigger()
 	if (bSuccess)
 	{
 		DrawDebugPoint(GetWorld(), Hit.Location, 20, FColor::Red, true);
+	}
+
+	//Blocking Hit이 발생하면 
+	//BeamEnd = FireHit.ImpactPoint;
+
+	if (BeamParticles)
+	{
+		const UStaticMeshSocket* MuzzleFlashSocket = Mesh->GetSocketByName("MuzzleFlashSocket");
+		FTransform SocketTransform;
+		MuzzleFlashSocket->GetSocketTransform(SocketTransform, Mesh);
+
+		UParticleSystemComponent* Beam = UGameplayStatics::SpawnEmitterAtLocation(
+			GetWorld(),
+			BeamParticles,
+			SocketTransform
+		);
+
+		if (Beam)
+		{
+			Beam->SetVectorParameter(FName("Target"), BeamEnd);
+		}
 
 	}
+
 		
 }
 
