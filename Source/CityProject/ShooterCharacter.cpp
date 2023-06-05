@@ -35,6 +35,9 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction(TEXT("Run"), EInputEvent::IE_Pressed, this, &AShooterCharacter::StartRun);
 	PlayerInputComponent->BindAction(TEXT("Run"), EInputEvent::IE_Released, this, &AShooterCharacter::StopRun);
 	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &AShooterCharacter::Shoot);
+
+	PlayerInputComponent->BindAction(TEXT("Aim"), EInputEvent::IE_Pressed, this, &AShooterCharacter::StartAiming);
+	PlayerInputComponent->BindAction(TEXT("Aim"), EInputEvent::IE_Released, this, &AShooterCharacter::EndAiming);
 }
 
 void AShooterCharacter::MoveForward(float AxisValue)
@@ -62,3 +65,12 @@ void AShooterCharacter::Shoot()
 	Gun->PullTrigger();
 }
 
+void AShooterCharacter::StartAiming()
+{
+	bIsAiming = true;
+}
+
+void AShooterCharacter::EndAiming()
+{
+	bIsAiming = false;
+}

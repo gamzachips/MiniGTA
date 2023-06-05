@@ -1,6 +1,5 @@
 #include "Gun.h"
 #include "Components/StaticMeshComponent.h"
-#include "Components/SphereComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Engine/Engine.h"
 #include "Kismet/GameplayStatics.h"
@@ -16,6 +15,7 @@ AGun::AGun()
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(Root);
+
 }
 
 void AGun::BeginPlay()
@@ -57,8 +57,6 @@ void AGun::PullTrigger()
 		DrawDebugPoint(GetWorld(), Hit.Location, 20, FColor::Red, true);
 	}
 
-	//Blocking Hit이 발생하면 
-	//BeamEnd = FireHit.ImpactPoint;
 
 	if (BeamParticles)
 	{

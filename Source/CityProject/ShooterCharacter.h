@@ -29,6 +29,11 @@ private:
 	void StartRun();
 	void StopRun();
 	void Shoot();
+	void StartAiming();
+	void EndAiming();
+
+public:
+	bool GetIsAiming() { return bIsAiming; }
 
 private:
 	
@@ -37,6 +42,7 @@ private:
 
 private:
 	float Speed = WalkSpeed;
+	bool bIsAiming = false;
 
 private:
 
