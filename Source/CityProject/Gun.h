@@ -24,6 +24,7 @@ public:
 	void PullTrigger();
 
 private:
+
 	UPROPERTY(VisibleAnywhere)
 		USceneComponent* Root;
 
@@ -38,5 +39,27 @@ private:
 
 	UPROPERTY(EditAnywhere)
 		UParticleSystem* MuzzleFlash;
+
+	UPROPERTY(EditAnywhere)
+		UParticleSystem* ImpactEffect;
+
+public:
+	/// Textures for the weapon crosshairs
+
+	UPROPERTY(EditAnywhere, Category = Crosshairs)
+	class UTexture2D* CrosshairsCenter;
+
+	UPROPERTY(EditAnywhere, Category = Crosshairs)
+	UTexture2D* CrosshairsLeft;
+
+	UPROPERTY(EditAnywhere, Category = Crosshairs)
+	UTexture2D* CrosshairsRight;
+
+	UPROPERTY(EditAnywhere, Category = Crosshairs)
+	UTexture2D* CrosshairsTop;
+
+	UPROPERTY(EditAnywhere, Category = Crosshairs)
+	UTexture2D* CrosshairsBottom;
+
 
 };

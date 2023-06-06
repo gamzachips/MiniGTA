@@ -22,6 +22,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	void SetHUDCrosshairs(float DeltaTIme);
 
 private:
 	void MoveForward(float AxisValue);
@@ -45,6 +46,9 @@ private:
 	bool bIsAiming = false;
 
 private:
+	class AShooterPlayerController* Controller;
+	class AShooterHUD* HUD;
+
 
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<AGun> GunClass;

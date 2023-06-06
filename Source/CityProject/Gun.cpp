@@ -6,6 +6,7 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "Engine/StaticMeshSocket.h"
 
+
 AGun::AGun()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -26,7 +27,6 @@ void AGun::BeginPlay()
 void AGun::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AGun::PullTrigger()
@@ -43,20 +43,25 @@ void AGun::PullTrigger()
 	OwnerController->GetPlayerViewPoint(Location, Rotation);
 
 	FVector End = Location + Rotation.Vector() * MaxRange;
-	FVector BeamEnd = End;
 
 	FHitResult Hit;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
 	Params.AddIgnoredActor(GetOwner());
 
-	bool bSuccess =GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
+	GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
 
-	if (bSuccess)
+	FVector ShotDirection = -Rotation.Vector();
+	//DrawDebugPoint(GetWorld(), Hit.Location, 20, FColor::Red, true);
+
+	FVector BeamEnd = End;
+	if (Hit.bBlockingHit)
 	{
-		DrawDebugPoint(GetWorld(), Hit.Location, 20, FColor::Red, true);
+		BeamEnd = Hit.ImpactPoint;
+			
+		if(ImpactEffect)
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, Hit.Location, ShotDirection.Rotation());
 	}
-
 
 	if (BeamParticles)
 	{
@@ -70,13 +75,10 @@ void AGun::PullTrigger()
 			SocketTransform
 		);
 
-		if (Beam)
-		{
+		if (Beam) {
 			Beam->SetVectorParameter(FName("Target"), BeamEnd);
+			UE_LOG(LogTemp, Log, TEXT("BeamEnd"));
 		}
-
 	}
-
-		
+	
 }
-
