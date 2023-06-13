@@ -4,12 +4,11 @@
 #include "ShooterHUD.h"
 #include "ShooterPlayerController.h"
 #include "Kismet/GameplayStatics.h"
-
+#include "GameFramework/SpringArmComponent.h"
 
 AShooterCharacter::AShooterCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 void AShooterCharacter::BeginPlay()
@@ -26,8 +25,6 @@ void AShooterCharacter::BeginPlay()
 		PlayerController->Possess(this);
 		Controller = Cast<AShooterPlayerController>(PlayerController);
 	}
-
-	
 }
 
 void AShooterCharacter::Tick(float DeltaTime)
@@ -102,15 +99,24 @@ void AShooterCharacter::StopRun()
 
 void AShooterCharacter::Shoot()
 {
-	Gun->PullTrigger();
+	if(State == ShooterState::Aiming)	
+		Gun->PullTrigger();
 }
 
 void AShooterCharacter::StartAiming()
 {
+	State = ShooterState::Aiming;
 	bIsAiming = true;
+	USpringArmComponent* SpringArm = FindComponentByClass<USpringArmComponent>();
+	SpringArm->TargetArmLength = SpringArmAimingLength;
 }
 
 void AShooterCharacter::EndAiming()
 {
+	State = ShooterState::None;
 	bIsAiming = false;
+
+	USpringArmComponent* SpringArm = FindComponentByClass<USpringArmComponent>();
+	SpringArm->TargetArmLength = SpringArmDefaultLength;
+
 }
