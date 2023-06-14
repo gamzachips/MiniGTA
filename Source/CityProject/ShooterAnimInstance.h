@@ -3,6 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "ShooterCharacter.h"
 #include "ShooterAnimInstance.generated.h"
 
 /**
@@ -32,7 +33,5 @@ private:
 	bool bIsAccelerating;
 
 	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
-	bool bIsAiming;
-
-
+	ShooterState CharacterState;
 };

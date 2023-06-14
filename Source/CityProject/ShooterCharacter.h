@@ -7,17 +7,20 @@
 
 class AGun;
 
+UENUM(BlueprintType)
+enum class ShooterState : uint8
+{
+	None,
+	Aiming,
+	Die
+};
+
 UCLASS()
 class CITYPROJECT_API AShooterCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-	enum ShooterState
-	{
-		None,
-		Aiming
-	};
-
+	
 public:
 	AShooterCharacter();
 
@@ -26,6 +29,7 @@ protected:
 
 public:	
 	virtual void Tick(float DeltaTime) override;
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void SetHUDCrosshairs(float DeltaTIme);
@@ -38,12 +42,14 @@ private:
 	void Shoot();
 	void StartAiming();
 	void EndAiming();
+	void Die();
 
 public:
-	bool GetIsAiming() { return bIsAiming; }
+	ShooterState GetState() { return State; }
 
 private:
-	ShooterState State = ShooterState::None;
+	UPROPERTY(EditAnywhere)
+		ShooterState State = ShooterState::None;
 
 	const float WalkSpeed = 1.0;
 	const float RunSpeed = 2.0;
@@ -52,16 +58,16 @@ private:
 
 private:
 	float Speed = WalkSpeed;
-	bool bIsAiming = false;
-
 private:
 	class AShooterPlayerController* Controller;
 	class AShooterHUD* HUD;
-
+	AGun* Gun;
 
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<AGun> GunClass;
 
-	UPROPERTY()
-		AGun* Gun; 
+	UPROPERTY(EditDefaultsOnly)
+		float MaxHealth = 100;
+	UPROPERTY(VisibleAnywhere)
+		float Health = MaxHealth;
 };

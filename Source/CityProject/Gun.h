@@ -16,9 +16,9 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
 public:	
 	virtual void Tick(float DeltaTime) override;
+	
 
 public:
 	void PullTrigger();
@@ -61,5 +61,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = Crosshairs)
 	UTexture2D* CrosshairsBottom;
 
+	UPROPERTY(EditAnywhere)
+	float Damage = 10;
 
 };

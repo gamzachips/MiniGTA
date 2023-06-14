@@ -28,7 +28,7 @@ void UShooterAnimInstance::NativeUpdateAnimation(float DeltaTime)
 
 	bIsAccelerating = ShooterCharacter->GetCharacterMovement()->GetCurrentAcceleration().Size() > 0.f ? true : false;
 
-	bIsAiming = ShooterCharacter->GetIsAiming();
+	CharacterState = ShooterCharacter->GetState();
 
 }
  

@@ -52,13 +52,19 @@ void AGun::PullTrigger()
 	GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
 
 	FVector ShotDirection = -Rotation.Vector();
-	//DrawDebugPoint(GetWorld(), Hit.Location, 20, FColor::Red, true);
 
 	FVector BeamEnd = End;
 	if (Hit.bBlockingHit)
 	{
 		BeamEnd = Hit.ImpactPoint;
-			
+		
+		AActor* HitActor = Hit.GetActor();
+		if (HitActor != nullptr)
+		{
+			FPointDamageEvent DamageEvent(Damage, Hit, ShotDirection, nullptr);
+			HitActor->TakeDamage(DamageEvent.Damage, DamageEvent, OwnerController, this);
+		}
+
 		if(ImpactEffect)
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, Hit.Location, ShotDirection.Rotation());
 	}
@@ -77,7 +83,6 @@ void AGun::PullTrigger()
 
 		if (Beam) {
 			Beam->SetVectorParameter(FName("Target"), BeamEnd);
-			UE_LOG(LogTemp, Log, TEXT("BeamEnd"));
 		}
 	}
 	
