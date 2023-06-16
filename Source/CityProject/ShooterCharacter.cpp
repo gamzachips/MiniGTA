@@ -5,6 +5,7 @@
 #include "ShooterPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Character/CharacterBase.h"
 
 AShooterCharacter::AShooterCharacter()
 {
@@ -14,8 +15,6 @@ AShooterCharacter::AShooterCharacter()
 void AShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	Health = MaxHealth;
 
 	Gun = GetWorld()->SpawnActor<AGun>(GunClass);
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
@@ -35,20 +34,7 @@ void AShooterCharacter::Tick(float DeltaTime)
 	SetHUDCrosshairs(DeltaTime);
 }
 
-float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
-{
-	float DamageToApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	UE_LOG(LogTemp, Warning, TEXT("TEST"));
 
-	DamageToApplied = FMath::Min(Health, DamageToApplied);
-	Health -= DamageToApplied;
-	UE_LOG(LogTemp, Warning, TEXT("%f"), Health);
-
-	if (Health <= 0.00000)
-		Die();
-
-	return DamageToApplied;
-}
 
 void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -115,26 +101,21 @@ void AShooterCharacter::StopRun()
 
 void AShooterCharacter::Shoot()
 {
-	if(State == ShooterState::Aiming)
+	if(State == CharacterState::Aiming)
 		Gun->PullTrigger();
 }
 
 void AShooterCharacter::StartAiming()
 {
-	State = ShooterState::Aiming;
+	State = CharacterState::Aiming;
 	USpringArmComponent* SpringArm = FindComponentByClass<USpringArmComponent>();
 	SpringArm->TargetArmLength = SpringArmAimingLength;
 }
 
 void AShooterCharacter::EndAiming()
 {
-	State = ShooterState::None;
+	State = CharacterState::None;
 	USpringArmComponent* SpringArm = FindComponentByClass<USpringArmComponent>();
 	SpringArm->TargetArmLength = SpringArmDefaultLength;
-
 }
 
-void AShooterCharacter::Die()
-{
-	State = ShooterState::Die;
-}
