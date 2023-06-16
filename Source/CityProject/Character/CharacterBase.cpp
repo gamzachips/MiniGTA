@@ -46,4 +46,5 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 void ACharacterBase::Die()
 {
 	State = CharacterState::Die;
+
 }

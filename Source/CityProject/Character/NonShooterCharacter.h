@@ -7,7 +7,7 @@
 #include "NonShooterCharacter.generated.h"
 
 UCLASS()
-class CITYPROJECT_API ANonShooterCharacter : public ACharacter
+class CITYPROJECT_API ANonShooterCharacter : public ACharacterBase
 {
 	GENERATED_BODY()
 
@@ -22,15 +22,4 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-public:
-	CharacterState GetState() { return State; }
-
-protected:
-	UPROPERTY(EditAnywhere)
-		CharacterState State = CharacterState::None;
-
-	const float WalkSpeed = 1.0;
-	const float RunSpeed = 2.0;
-
-	float Speed = WalkSpeed;
 };
