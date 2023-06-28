@@ -10,8 +10,10 @@ UENUM(BlueprintType)
 enum class CharacterState : uint8
 {
 	None,
+	Running,
 	Aiming,
-	Die
+	Die, 
+	Surrender
 };
 
 UCLASS()
