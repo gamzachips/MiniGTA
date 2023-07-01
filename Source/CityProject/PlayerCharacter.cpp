@@ -36,20 +36,17 @@ void APlayerCharacter::Tick(float DeltaTime)
 	
 	if (State == CharacterState::Running)
 	{
-		Stamina -= 10 * DeltaTime;
-		if (Stamina < 0)
-		{
-			Stamina = 0;
+		Stamina = FMath::Max(0, Stamina - 10 * DeltaTime);
+		if (Stamina == 0)
 			StopRun();
-		}
 	}
 	else
 	{
-		Stamina += 10 * DeltaTime;
-		if (Stamina > MaxStamina) Stamina = MaxStamina;
+		Stamina = FMath::Min(MaxStamina, Stamina + 10 * DeltaTime);
 	}
 
 	GameUI->SetStaminaBar(MaxStamina, Stamina);
+	GameUI->SetHPBar(MaxHP, HP);
 	
 }
 
