@@ -13,10 +13,13 @@ UCLASS()
 class CITYPROJECT_API AAIPeopleController : public AAIController
 {
 	GENERATED_BODY()
+
+public:
+	void MoveToLocation(const FVector& TargetLocation);
+
 	
 protected:
 	virtual void BeginPlay() override;
-
 
 private:
 	//Behaviour trees

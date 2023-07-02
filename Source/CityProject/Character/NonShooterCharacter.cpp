@@ -7,13 +7,11 @@ ANonShooterCharacter::ANonShooterCharacter()
 {
  
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 void ANonShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 void ANonShooterCharacter::Tick(float DeltaTime)

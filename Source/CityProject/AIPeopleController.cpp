@@ -4,6 +4,12 @@
 #include "AIPeopleController.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
+
+void AAIPeopleController::MoveToLocation(const FVector& TargetLocation)
+{
+	UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, TargetLocation);
+}
 
 void AAIPeopleController::BeginPlay()
 {
